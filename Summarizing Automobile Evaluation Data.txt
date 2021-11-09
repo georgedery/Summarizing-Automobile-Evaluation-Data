@@ -1,0 +1,42 @@
+import pandas as pd
+import numpy as np
+car_eval = pd.read_csv('car_eval_dataset.csv')
+print(car_eval.head())
+
+manufacturer_index = car_eval['manufacturer_country'].value_counts()
+print(manufacturer_index) 
+modal_category = manufacturer_index.index[0]
+print(modal_category)
+_4th_most_frequent = manufacturer_index.index[3]
+print(_4th_most_frequent)
+
+manufacturer_country_proportion = car_eval['manufacturer_country'].value_counts(normalize=True)
+print(manufacturer_country_proportion)
+
+# print(car_eval['buying_cost'].unique())
+
+buying_cost_categories = ['low', 'med', 'high', 'vhigh']
+# print(buying_cost_categories)
+
+car_eval['buying_cost'] = pd.Categorical(car_eval['buying_cost'], buying_cost_categories, ordered=True)
+
+median_category_index = np.median(car_eval['buying_cost'].cat.codes)
+print(median_category_index)
+
+median_category = buying_cost_categories[int(median_category_index)]
+print(median_category)
+
+luggage_proportion = car_eval['luggage'].value_counts(normalize=True)
+print(luggage_proportion)
+
+luggage_proportion_1 = car_eval['luggage'].value_counts(dropna=False, normalize=True)
+print(luggage_proportion_1)
+
+luggage_proportion_2 = car_eval['luggage'].value_counts()/len(car_eval['luggage'])
+print(luggage_proportion_2)
+
+five_more_doors = (car_eval['doors'] == '5more').sum()
+print(five_more_doors)
+
+five_more_proportion = (car_eval['doors'] == '5more').mean()
+print(five_more_proportion)
